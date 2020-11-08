@@ -1,25 +1,50 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState } from "react";
+import "./App.css";
+import axios from "axios";
+import { saveAs } from "file-saver";
 
-function App() {
+// component
+const App = () => {
+  // state
+  const [state, setState] = useState({
+    name: "",
+    receiptId: 0,
+    price1: 0,
+    price2: 0,
+  });
+
+  // on change event handler
+  const onChange = e => setState({ ...state, [e.target.name]: e.target.value });
+  // pdf download
+  const downloadPdf = () => {
+    axios.post("/create-pdf", state);
+  };
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <input type="text" name="name" placeholder="Name" onChange={onChange} />
+      <input
+        type="number"
+        name="receiptId"
+        placeholder="Receipt ID"
+        onChange={onChange}
+      />
+      <input
+        type="number"
+        name="price1"
+        placeholder="Price 1"
+        onChange={onChange}
+      />
+      <input
+        type="number"
+        name="price2"
+        placeholder="Price 2"
+        onChange={onChange}
+      />
+
+      <button onClick={downloadPdf}>Download PDF</button>
     </div>
   );
-}
+};
 
 export default App;
